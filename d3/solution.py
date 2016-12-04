@@ -9,6 +9,18 @@ def solution1(instr):
             n_possible += 1
     return n_possible
 
+def solution2(instr):
+    instr = parse_input(instr)
+    n_possible = 0
+    triangles = []
+    for i in range(0,len(instr),3):
+        for j in range(3):
+            triangles.append([instr[i][j],instr[i+1][j],instr[i+2][j]])
+    for sides in triangles:
+        if valid_triangle(sides):
+            n_possible += 1
+    return n_possible
+
 def parse_input(inp):
     inp = inp.split('\n')
     inp = [[line[:3],line[5:8],line[10:13]] for line in inp]
@@ -38,3 +50,5 @@ def test_solution2():
     with open('test_input.txt','r') as f:
         assert solution2(f.read()[:-1]) == 6
     assert solution2('541  588  421\n827  272  126\n660  514  367') == 3
+    with open('input.txt','r') as f:
+        assert solution2(f.read()[:-1]) == 1849
