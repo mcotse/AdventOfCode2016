@@ -2,19 +2,23 @@ import pytest
 import re
 
 def solution1(instr):
-    instr = instr.split('\n')
-    instr = [[line[:3],line[5:8],line[10:13]] for line in instr]
-    for line in instr:
-        for i in range(len(line)):
-            try:
-                line[i] = int(re.sub('\s+','',line[i]))
-            except:
-                print line[i]
+    instr = parse_input(instr)
     n_possible = 0
     for sides in instr:
         if valid_triangle(sides):
             n_possible += 1
     return n_possible
+
+def parse_input(inp):
+    inp = inp.split('\n')
+    inp = [[line[:3],line[5:8],line[10:13]] for line in inp]
+    for line in inp:
+        for i in range(len(line)):
+            try:
+                line[i] = int(re.sub('\s+','',line[i]))
+            except:
+                print line[i], 'failed to parse'
+    return inp
 
 def valid_triangle(sides):
     for i in range(-1,len(sides)-1):
