@@ -1,5 +1,10 @@
 import pytest
 import re
+
+def solution1(inp):
+    id_sum = 0
+    return id_sum
+
 def parse_input(inp):
     inp = inp.split('\n')
     parsed = []
@@ -22,3 +27,10 @@ def test_parsed():
     assert letters == 'notarealroom'
     assert s_id == 404
     assert checksum == 'oarel'
+
+def test_solution():
+    assert solution1('aaaaa-bbb-z-y-x-123[abxyz]') == 123
+    assert solution1('aaaaa-bbb-z-y-x-123[abxyz]\nnot-a-real-room-404[oarel]') == 527
+    assert solution1('totally-real-room-200[decoy]') == 0
+    assert solution1('aaaaa-bbb-z-y-x-123[abxyz]\nnot-a-real-room-404[oarel]\ntotally-real-room-200[decoy]') == 527
+    assert solution1('aaaaa-bbb-z-y-x-123[abxyz]\nnot-a-real-room-404[oarel]\ntotally-real-room-200[decoy]\na-b-c-d-e-f-g-h-987[abcde]') == 1514
