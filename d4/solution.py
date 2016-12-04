@@ -3,6 +3,11 @@ import re
 
 def solution1(inp):
     id_sum = 0
+    parsed = parse_input(inp)
+    for line in parsed:
+        letter,s_id,checksum = line
+        if check_sum(letter,checksum):
+            id_sum += s_id
     return id_sum
 
 def parse_input(inp):
