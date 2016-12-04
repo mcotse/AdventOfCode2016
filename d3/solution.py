@@ -26,11 +26,15 @@ def valid_triangle(sides):
             return False
     return True
 
-def test():
+def test_solution1():
     assert solution1('  5   10   25') == 0
     assert solution1('  3    4    5') == 1
     assert solution1('  3    4    5\n  5   10   25') == 1
     assert solution1('541  588  421\n827  272  126\n660  514  367\n 39  703  839') == 2
+    with open('input.txt','r') as f:
+        assert solution1(f.read()[:-1]) ==  993
 
-with open('input.txt','r') as f:
-    print solution1(f.read()[:-1])
+def test_solution2():
+    with open('test_input.txt','r') as f:
+        assert solution2(f.read()[:-1]) == 6
+    assert solution2('541  588  421\n827  272  126\n660  514  367') == 3
