@@ -1,5 +1,6 @@
 import pytest
 import re
+from collections import OrderedDict
 
 def solution1(inp):
     id_sum = 0
@@ -15,6 +16,22 @@ def parse_input(inp):
         letters = re.sub(r'-','',letters)
         parsed.append((letters,s_id,checksum))
     return parsed
+
+def checksum(letters,checksum):
+    count = {}
+    for letter in letters:
+        if letter not in count:
+            count[letter] = 1
+        else:
+            count[letter] += 1
+    #first sort by key alphabetically then sort by value in reverse
+    sorted_alp = sorted(count.items(),key=lambda x:x[0])
+    d = OrderedDict(sorted(sorted_alp,key=lambda x:x[1],reverse=True))
+    return ''.join(d.keys()[:5]) == checksum
+
+def test_checksum():
+    assert checksum('aaaaabbbzyx','abxyz') == True
+    assert checksum('notarealroom','oarel') == True
     
 def test_parsed():
     parsed = parse_input('aaaaa-bbb-z-y-x-123[abxyz]')
