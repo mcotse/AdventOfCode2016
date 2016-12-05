@@ -1,14 +1,26 @@
 import pytest
 import re
+import string
 
 def solution1(inp):
     id_sum = 0
     parsed = parse_input(inp)
     for line in parsed:
-        letter,s_id,checksum = line
-        if check_sum(letter,checksum):
+        letters,s_id,checksum = line
+        if check_sum(letters,checksum):
             id_sum += s_id
     return id_sum
+
+def solution2(inp):
+    parsed = parse_input(inp,no_dash=False)
+    rooms = []
+    for line in parsed:
+        cipher,s_id,checksum = line
+        rooms.append((shift_cipher(cipher,s_id),s_id))
+    for room in rooms:
+        if 'north' in room[0]:
+            return room
+    raise Exception('404 Room Not found')
 
 def parse_input(inp,no_dash=True):
     inp = inp.split('\n')
@@ -34,10 +46,12 @@ def check_sum(letters,checksum):
     sorted_value = sorted(sorted_alpha,key=lambda x:x[1],reverse=True)
     return ''.join([x[0] for x in sorted_value][:5]) == checksum
 
-def shift_cipher(cipher,shift_mapping):
-    result = []
-    return ''.join(result)
-
+def shift_cipher(cipher,shift_index):
+    shift_index = shift_index % 26
+    alphabet = string.lowercase
+    shift_map = dict(zip(alphabet,alphabet[shift_index:]+alphabet[:shift_index]))
+    shift_map['-']=' '
+    return ''.join([shift_map[i] for i in cipher])
 
 def test_checksum():
     assert check_sum('aaaaabbbzyx','abxyz') == True
@@ -60,7 +74,7 @@ def test_parsed():
     assert s_id == 404
     assert checksum == 'oarel'
 
-def test_solution():
+def test_solution1():
     assert solution1('aaaaa-bbb-z-y-x-123[abxyz]') == 123
     assert solution1('aaaaa-bbb-z-y-x-123[abxyz]\nnot-a-real-room-404[oarel]') == 527
     assert solution1('totally-real-room-200[decoy]') == 0
@@ -68,4 +82,4 @@ def test_solution():
     assert solution1('aaaaa-bbb-z-y-x-123[abxyz]\nnot-a-real-room-404[oarel]\ntotally-real-room-200[decoy]\na-b-c-d-e-f-g-h-987[abcde]') == 1514
 
 with open('input.txt','r') as f:
-    print solution1(f.read()[:-1])
+    print solution2(f.read()[:-1])
